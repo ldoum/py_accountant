@@ -86,6 +86,21 @@ reading the file line by line, divide the total amount by 100 to bring the decim
 
 v1.1 complete
 
+834pm
+Updated the if statement regex to handle writing in cents. 6 cents: 0.06, .06
++ to * for first 2 alternations.
+
+v1.2 done
+
+1007pm
+The newline characters were causing the prompt in the else condition to not display properly. The badly written
+input would be displayed, but the rest of the prompt got displayed on the next line. Not what I want.
+
+Assigned a variable named transaction to hold inputs without \n.
+
+v1.3
+
+
 """
 import re
 
@@ -95,7 +110,9 @@ total = 0
 
 for line in f:     #iterate each line from file
 
-    print(line.replace('\n',''))
+    transaction = line.replace('\n','') #remove newline characters and assign modded input to variable
+    
+    print(transaction)
     
     """
         only accept amounts in the format of 2 decimal pts ($456.78) or no decimal points ($87)
@@ -110,27 +127,27 @@ for line in f:     #iterate each line from file
         \d+: 82
         
     """    
-    if re.compile(r"^([\+\-]\d*\.\d{2}|\d*\.\d{2}|[\+\-]\d+|\d+)$").findall(line):
+    if re.compile(r"^([\+\-]\d*\.\d{2}|\d*\.\d{2}|[\+\-]\d+|\d+)$").findall(transaction):
         
-        match line[0]: #get first character for each line: +, -, or no sign
+        match transaction[0]: #get first character for each line: +, -, or no sign
             case '+':
-                total += float(line[1:]) * 100    #skip prefix if found. Then remove decimal point
+                total += float(transaction[1:]) * 100    #skip prefix if found. Then remove decimal point
             case '-':
-                total -= float(line[1:]) * 100    #skip prefix if found. Then remove decimal point
+                total -= float(transaction[1:]) * 100    #skip prefix if found. Then remove decimal point
             case _: 
-                total += float(line) * 100       #Remove decimal point   
+                total += float(transaction) * 100       #Remove decimal point   
     
-    elif re.compile(r"^\s$").findall(line):      #whitespace handling
+    elif re.compile(r"^\s$").findall(transaction):      #whitespace handling
         
         pass   #skip line and continue
     
     else:
         
-        print(line + " is not a valid amount")
+        print(f"{transaction} is not a valid amount. Skipping this.")
         
 total /= 100    #back to decimal point
     
-print("Total is: $" + format(total,".2f"))  #show total amount with 2 decimal points to the right
+print(f"Total is: ${format(total,'.2f')}")  #show total amount with 2 decimal points to the right
 
 f.close() 
 
