@@ -62,14 +62,38 @@ Updated.
 1109pm
 Final test passed. This program is ready now.
 
+#####
+631pm 12/25/2022
+
+Updating v1. Adding spaces fires the else condition in the for loop that prompts to the user
+that he/she is typing the payment wrong. The if condition can't find a match from whitespace.
+Will add an elif condition to handle whitespace.
+
+643pm
+Updated. Now to figure out how to handle the float problem. Sometimes I get answers that include 13 decimal places
+to the right.
+
+651pm
+Added round functions in the match case block. round(value, digits after decimal pt ). Hope it works. Do I import
+the math library?
+
+Not working.
+
+740pm
+Solved the problem. Didnt need the round functions at all. Inside the match cases, take the string input and make
+that into a float. Then multiply by 100 to get rid of the decimal point. Finally, when the for loop finishes
+reading the file line by line, divide the total amount by 100 to bring the decimal point back.
+
+v1.1 complete
+
 """
 import re
 
-f = open("billiam.txt", "r") #only include txt file name if txt file is in same project folder
+f = open("billiam.txt", "r")    #only include txt file name if txt file is in same project folder
 
-count = 0
+total = 0
 
-for line in f: #iterate each line from file
+for line in f:     #iterate each line from file
 
     print(line.replace('\n',''))
     
@@ -88,17 +112,25 @@ for line in f: #iterate each line from file
     """    
     if re.compile(r"^([\+\-]\d+\.\d{2}|\d+\.\d{2}|[\+\-]\d+|\d+)$").findall(line):
         
-        match line[0]: #get first character for each line: +, -, or nothing
+        match line[0]: #get first character for each line: +, -, or no sign
             case '+':
-                count += float(line[1:]) #skip prefix if found
+                total += float(line[1:]) * 100    #skip prefix if found. Then remove decimal point
             case '-':
-                count -= float(line[1:]) #skip prefix if found
+                total -= float(line[1:]) * 100    #skip prefix if found. Then remove decimal point
             case _: 
-                count += float(line)
+                total += float(line) * 100       #Remove decimal point   
+    
+    elif re.compile(r"^\s$").findall(line):      #whitespace handling
+        
+        pass   #skip line and continue
+    
     else:
         
         print(line + " is not a valid amount")
+        
+total /= 100    #back to decimal point
     
-print("Total is: $" + str(count)) 
-f.close() #finish
+print("Total is: $" + format(total,".2f"))  #show total amount with 2 decimal points to the right
+
+f.close() 
 
