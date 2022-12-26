@@ -101,16 +101,16 @@ for line in f:     #iterate each line from file
         only accept amounts in the format of 2 decimal pts ($456.78) or no decimal points ($87)
         this condition looks for amounts on each line that follow the format defined by this regex
 
-        [\+\-]\d+\.\d{2}: +13.29 , -6.78, 
+        [\+\-]\d*\.\d{2}: +13.29 , -6.78, +.53
 
-        \d+\.\d{2}: 45.98
+        \d*\.\d{2}: 45.98, .86
 
         [\+\-]\d+: +12, -75
 
         \d+: 82
         
     """    
-    if re.compile(r"^([\+\-]\d+\.\d{2}|\d+\.\d{2}|[\+\-]\d+|\d+)$").findall(line):
+    if re.compile(r"^([\+\-]\d*\.\d{2}|\d*\.\d{2}|[\+\-]\d+|\d+)$").findall(line):
         
         match line[0]: #get first character for each line: +, -, or no sign
             case '+':
