@@ -1,5 +1,5 @@
 """
-Project made 203pm Christmas Eve Saturday
+Project made 203pm Christmas Eve Saturday 2022
 
 Got tired of calculating my past due water bills and fees by hand. I want to make a program
 that reads a file with a long list of payments. Deposits and withdrawals. For simple
@@ -14,6 +14,10 @@ Example:
 45.78   Deposit
 -6.82   Withdrawal
 
+237am 1/12/2026
+v1.1 - enhanced filtering. Now ignores characters and whitespaces after the transaction sequence
+
+
 """
 import re
 
@@ -23,7 +27,7 @@ total = 0
 
 for line in f:     #iterate each line from file
 
-    transaction = line.replace('\n','') #remove newline characters and assign modded input to variable
+    transaction = re.sub('[A-Za-z\\s]', '', line) #added. remove whitespace and letters from each line
     
     print(transaction)
     
